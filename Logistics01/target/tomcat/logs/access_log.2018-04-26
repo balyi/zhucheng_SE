@@ -1,0 +1,16 @@
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:04:00 +0800] "GET / HTTP/1.1" 302 - http-bio-8090-exec-1 203
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:04:00 +0800] "GET /tologin.action;jsessionid=D7B7AAABF259218C8D03F3D08C07AA7E HTTP/1.1" 200 3308 http-bio-8090-exec-2 432
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:07:29 +0800] "POST /login.action HTTP/1.1" 302 - http-bio-8090-exec-4 2736
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:07:30 +0800] "GET /home HTTP/1.1" 200 5164 http-bio-8090-exec-5 504
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:07:31 +0800] "GET /introduction.action HTTP/1.1" 200 1290 http-bio-8090-exec-6 33
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:07:35 +0800] "GET /to_order_list.action?userId=e1afea8a-4d3a-4850-b5e4-914806c3b0b1 HTTP/1.1" 200 3351 http-bio-8090-exec-7 188
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:11:16 +0800] "GET /product_list_download.action HTTP/1.1" 200 9748 http-bio-8090-exec-9 560
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:11:46 +0800] "GET /order_list_download.action HTTP/1.1" 200 6157 http-bio-8090-exec-10 53
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:13:39 +0800] "GET /to_contract_list.action?userId=e1afea8a-4d3a-4850-b5e4-914806c3b0b1 HTTP/1.1" 200 2921 http-bio-8090-exec-2 78
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:13:42 +0800] "POST /to_contract HTTP/1.1" 200 1884 http-bio-8090-exec-3 49
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:13:44 +0800] "POST /contract_download.action HTTP/1.1" 200 22557 http-bio-8090-exec-3 535
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:26:52 +0800] "GET /to_order_list.action?userId=e1afea8a-4d3a-4850-b5e4-914806c3b0b1 HTTP/1.1" 200 3351 http-bio-8090-exec-6 55
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:27:18 +0800] "POST /to_pay HTTP/1.1" 200 3526 http-bio-8090-exec-6 54
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:29:59 +0800] "POST /to_confirm HTTP/1.1" 200 1336 http-bio-8090-exec-9 43
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:35:00 +0800] "GET /callback?p1_MerId=10001126856&r0_Cmd=Buy&r1_Code=1&r2_TrxId=218676333312192J&r3_Amt=0.01&r4_Cur=RMB&r5_Pid=&r6_Order=433a2bb7-b5c1-40f1-89af-c5436266ac28&r7_Uid=&r8_MP=&r9_BType=1&ru_Trxtime=20180426213459&ro_BankOrderId=118042621848390073&rb_BankId=YJZF-NET&rp_PayDate=20180426213441&rq_CardNo=&rq_SourceFee=0.0&rq_TargetFee=0.0&hmac=228e10c5b5963eefb181263632de42ba&hmac_safe=d1806b6a89316834980bb605441e9644 HTTP/1.1" 200 895 http-bio-8090-exec-10 144
+0:0:0:0:0:0:0:1 - - [26/Apr/2018:21:35:32 +0800] "GET /to_order_list.action?userId=e1afea8a-4d3a-4850-b5e4-914806c3b0b1 HTTP/1.1" 200 3352 http-bio-8090-exec-10 31

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="true" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="E:\redis学习"/>
+			<item value="E:\汇通day07all\1708HT"/>
+			<item value="E:\汇通day06new - 副本\1708HT"/>
+			<item value="I:\工作空间\workspace3\EasyMallF"/>
+			<item value="E:\Logistics01"/>
+			<item value="E:\1708HT"/>
+			<item value="I:\7-12全集\9-12月 提高班\03框架部分\汇通day07all\1708HT"/>
+			<item value="I:\7-12全集\9-12月 提高班\02WEB部分\EasyMall项目不同阶段合集\00EasyMall"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+	<section name="WORKBENCH_SETTINGS">
+		<list key="ENABLED_TRANSFERS">
+		</list>
+	</section>
+	<section name="ChooseWorkspaceDialogSettings">
+		<item value="341" key="DIALOG_X_ORIGIN"/>
+		<item value="180" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

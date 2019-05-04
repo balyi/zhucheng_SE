@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 映射文件: 将类映射到表, 将类中的属性映射到表的列 -->
+<hibernate-mapping>
+	<class name="ssh.day05.Post" table="p_post">
+		<id name="id" column="p_id">
+			<generator class="identity"/>
+		</id>
+		<property name="content" column="p_content"/>
+		<property name="postTime" column="p_time"/>
+		<!-- 当前对象的多个实例, 对应对方一个对象的关系
+		也就是多个Post对象对应一个User对象 -->
+		<many-to-one name="user" column="user_id"
+			class="ssh.day05.User" lazy="false"></many-to-one>
+		<!-- table 用于指定对方表名 -->
+		<set name="comments" table="p_comment" lazy="false">
+			<!-- 对方表p_comment的 外键 post_id -->
+			<key column="post_id"></key>
+			<!-- class 指定set集合中每个元的类型 -->
+			<one-to-many class="ssh.day05.Comment"/>
+		</set> 
+	</class>
+</hibernate-mapping>
+
+
+

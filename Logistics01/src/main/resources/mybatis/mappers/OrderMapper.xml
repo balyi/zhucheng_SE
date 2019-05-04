@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.taihu.logistics.mapper.OrderMapper">
+
+	<select id="findAll"  resultType="Order">
+  		SELECT * FROM orders
+  	</select>
+  	
+  	<select id="findOrderByUserId"  resultType="Order">
+  		SELECT * FROM orders WHERE user_id=#{userId}
+  	</select>
+  	
+  	<select id="findOrderByIds"  resultType="Order">
+  		SELECT * FROM orders WHERE order_id IN
+  		<foreach collection="array" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+  	</select>
+  	
+  	<select id="findTruckIdsByOrderId"  resultType="String">
+  		SELECT truck_id FROM order_truck WHERE order_id=#{orderId}
+  	</select>
+
+	<insert id="addOrder">
+	INSERT INTO orders (order_id,order_no,user_id,order_state,pay_state,total_weight,total_volume,start_add,end_add,create_time) 
+	VALUES
+	(#{orderId},#{orderNo},#{userId},#{orderState},#{payState},#{totalWeight},#{totalVolume},#{startAdd},#{endAdd},#{createTime})
+	</insert>
+	
+	<insert id="saveProductAndOrder">
+		INSERT INTO order_product (product_id,order_id) VALUES
+		<foreach collection="productIds" item="productId" separator=",">
+			(#{productId},#{orderId})
+		</foreach>
+	</insert>
+	
+	<insert id="saveTruckAndOrder">
+		INSERT INTO order_truck (truck_id,order_id) VALUES (#{truckId},#{orderId})
+	</insert>
+	
+	<delete id="deleteTruckAndOrder">
+	DELETE FROM order_truck WHERE order_id=#{orderId}
+	</delete>
+	
+	<update id="changeOrderStates">
+	UPDATE orders SET order_state=#{orderState} WHERE order_id in 
+	<!-- 因为传递过来的是map 所以collection中写key -->
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+		#{id}
+		</foreach>
+	</update>
+	
+	<update id="changePayState">
+	UPDATE orders SET pay_state=#{payState} WHERE order_id=#{orderId}
+	</update>
+	
+	<update id="changeOrderState">
+	UPDATE orders SET order_state=#{orderState} WHERE order_id=#{orderId}
+	</update>
+</mapper>

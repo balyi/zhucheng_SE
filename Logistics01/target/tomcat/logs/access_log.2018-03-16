@@ -1,0 +1,17 @@
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:39:44 +0800] "GET / HTTP/1.1" 302 - http-bio-8090-exec-1 297
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:39:45 +0800] "GET /tologin.action;jsessionid=FBE71472D579E0FD52FAF4AA7594AA01 HTTP/1.1" 200 3945 http-bio-8090-exec-2 800
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:39:56 +0800] "POST /login.action HTTP/1.1" 302 - http-bio-8090-exec-3 2113
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:39:57 +0800] "GET /home HTTP/1.1" 200 5164 http-bio-8090-exec-4 733
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:39:58 +0800] "GET /introduction.action HTTP/1.1" 200 1290 http-bio-8090-exec-5 218
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:02 +0800] "GET /to_userlist.action HTTP/1.1" 200 4042 http-bio-8090-exec-6 165
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:05 +0800] "POST /to_user_role HTTP/1.1" 200 3500 http-bio-8090-exec-7 276
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:05 +0800] "GET /staticfile/skin/default/images/icon/currency_yen.png HTTP/1.1" 404 1055 http-bio-8090-exec-8 99
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:08 +0800] "POST /save_user_role HTTP/1.1" 302 - http-bio-8090-exec-9 138
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:08 +0800] "GET /to_userlist HTTP/1.1" 200 4042 http-bio-8090-exec-10 38
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:11 +0800] "POST /to_user_role HTTP/1.1" 200 3499 http-bio-8090-exec-10 55
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:11 +0800] "GET /staticfile/skin/default/images/icon/currency_yen.png HTTP/1.1" 404 1055 http-bio-8090-exec-10 14
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:12 +0800] "POST /save_user_role HTTP/1.1" 302 - http-bio-8090-exec-10 60
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:12 +0800] "GET /to_userlist HTTP/1.1" 200 4042 http-bio-8090-exec-10 27
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:14 +0800] "POST /to_user_role HTTP/1.1" 200 3500 http-bio-8090-exec-10 46
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:14 +0800] "GET /staticfile/skin/default/images/icon/currency_yen.png HTTP/1.1" 404 1055 http-bio-8090-exec-6 11
+0:0:0:0:0:0:0:1 - - [16/Mar/2018:15:40:14 +0800] "GET /staticfile/skin/default/images/icon/currency_yen.png HTTP/1.1" 404 1055 http-bio-8090-exec-6 9

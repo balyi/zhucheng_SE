@@ -1,0 +1,6 @@
+0:0:0:0:0:0:0:1 - - [16/Apr/2018:09:44:49 +0800] "GET / HTTP/1.1" 302 - http-bio-8090-exec-1 277
+0:0:0:0:0:0:0:1 - - [16/Apr/2018:09:44:49 +0800] "GET /tologin.action;jsessionid=E43F177BE2596AD646FD352E58599F26 HTTP/1.1" 200 3308 http-bio-8090-exec-2 478
+0:0:0:0:0:0:0:1 - - [16/Apr/2018:09:45:24 +0800] "POST /login.action HTTP/1.1" 302 - http-bio-8090-exec-3 1806
+0:0:0:0:0:0:0:1 - - [16/Apr/2018:09:45:24 +0800] "GET /home HTTP/1.1" 200 4342 http-bio-8090-exec-4 425
+0:0:0:0:0:0:0:1 - - [16/Apr/2018:09:45:25 +0800] "GET /introduction.action HTTP/1.1" 200 1290 http-bio-8090-exec-5 126
+0:0:0:0:0:0:0:1 - - [16/Apr/2018:09:45:39 +0800] "GET /to_add_product.action HTTP/1.1" 200 4229 http-bio-8090-exec-6 54

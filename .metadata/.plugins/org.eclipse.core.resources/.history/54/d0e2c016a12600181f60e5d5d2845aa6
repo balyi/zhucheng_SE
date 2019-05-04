@@ -1,0 +1,297 @@
+package edu.taihu.logistics.controller;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.model.FieldsDocumentPart;
+import org.apache.poi.hwpf.usermodel.Fields;
+import org.apache.poi.hwpf.usermodel.Range;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import edu.taihu.logistics.pojo.Contract;
+import edu.taihu.logistics.pojo.Order;
+import edu.taihu.logistics.pojo.Product;
+import edu.taihu.logistics.service.ContractService;
+import edu.taihu.logistics.service.OrderService;
+import edu.taihu.logistics.service.ProductService;
+
+@Controller
+public class DownloadController {
+	@Autowired
+	private OrderService orderService;
+	@Autowired
+	private ProductService productService;
+	
+	private ContractService contractService;
+	
+	@RequestMapping("/product_list_download")
+	public void product_list_download(Model model,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String[] headers = {"货物id", "货号", "货物名称", "货物状态", "货物数量", "货物长", "货物宽", "货物高", "货物重量", "备注", "用户Id"};//导出的Excel头部，这个要根据自己项目改一下
+
+        List<Product> dataset = productService.findAll();//查询出来的数据，根据自己项目改一下
+
+        //下面的完全不动就行了（Excel数据中不包含图片）
+
+        // 声明一个工作薄
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        // 生成一个表格
+        HSSFSheet sheet = workbook.createSheet();
+        // 设置表格默认列宽度为15个字节
+        sheet.setDefaultColumnWidth((short) 18);
+        HSSFRow row = sheet.createRow(0);
+        for (short i = 0; i < headers.length; i++) {
+            HSSFCell cell = row.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+            cell.setCellValue(text);
+        }
+        //遍历集合数据，产生数据行
+        Iterator<Product> it = dataset.iterator();
+        int index = 0;
+        while (it.hasNext()) {
+            index++;
+            row = sheet.createRow(index);
+            Product t = (Product) it.next();
+            //利用反射，根据javabean属性的先后顺序，动态调用getXxx()方法得到属性值
+            Field[] fields = t.getClass().getDeclaredFields();
+            for (short i = 0; i < fields.length; i++) {
+                HSSFCell cell = row.createCell(i);
+                Field field = fields[i];
+                String fieldName = field.getName();
+                String getMethodName = "get"
+                        + fieldName.substring(0, 1).toUpperCase()
+                        + fieldName.substring(1);
+                try {
+                    Class tCls = t.getClass();
+                    Method getMethod = tCls.getMethod(getMethodName,
+                            new Class[]{});
+                    Object value = getMethod.invoke(t, new Object[]{});
+                    String textValue = null;
+
+
+                    if (value instanceof Date) {
+                        Date date = (Date) value;
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        textValue = sdf.format(date);
+                    } else if(value instanceof Integer){
+                    	textValue = ((Integer)value).toString();
+                    	if ("getProductState".equals(getMethodName)){
+                            if ("1".equals(textValue)) {
+                                textValue = "已提交";
+                            } else if ("0".equals(textValue)) {
+                                textValue = "未提交";
+                            }
+                    	}
+                    } else if (value instanceof String) {
+                            textValue = (String) value;
+                    } else if (value instanceof Double){
+                        textValue = ((Double)value).toString();
+                    }
+
+                    HSSFRichTextString richString = new HSSFRichTextString(textValue);
+                    HSSFFont font3 = workbook.createFont();
+                    font3.setColor(HSSFColor.BLUE.index);//定义Excel数据颜色
+                    richString.applyFont(font3);
+                    cell.setCellValue(richString);
+
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-disposition", "attachment;filename=ProductList.xls");//默认Excel名称
+        response.flushBuffer();
+        workbook.write(response.getOutputStream());
+        model.addAttribute("msg", "下载货物列表成功");
+    }
+	@RequestMapping("/order_list_download")
+	public void order_list_download(Model model,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String[] headers = {"订单id", "订单号", "用户id", "订单状态", "支付状态", "总重", "总体积", "出发地址", "到达地址"};//导出的Excel头部，这个要根据自己项目改一下
+
+        List<Order> dataset = orderService.findAll();//查询出来的数据，根据自己项目改一下
+
+        //下面的完全不动就行了（Excel数据中不包含图片）
+
+        // 声明一个工作薄
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        // 生成一个表格
+        HSSFSheet sheet = workbook.createSheet();
+        // 设置表格默认列宽度为15个字节
+        sheet.setDefaultColumnWidth((short) 18);
+        HSSFRow row = sheet.createRow(0);
+        for (short i = 0; i < headers.length; i++) {
+            HSSFCell cell = row.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+            cell.setCellValue(text);
+        }
+        //遍历集合数据，产生数据行
+        Iterator<Order> it = dataset.iterator();
+        int index = 0;
+        while (it.hasNext()) {
+            index++;
+            row = sheet.createRow(index);
+            Order t = (Order) it.next();
+            //利用反射，根据javabean属性的先后顺序，动态调用getXxx()方法得到属性值
+            Field[] fields = t.getClass().getDeclaredFields();
+            for (short i = 0; i < fields.length; i++) {
+                HSSFCell cell = row.createCell(i);
+                Field field = fields[i];
+                String fieldName = field.getName();
+                String getMethodName = "get"
+                        + fieldName.substring(0, 1).toUpperCase()
+                        + fieldName.substring(1);
+                try {
+                    Class tCls = t.getClass();
+                    
+                    if(-1==getMethodName.indexOf("Sh")&&-1==getMethodName.indexOf("Qu")&&-1==getMethodName.indexOf("Jie")) {
+                    	Method getMethod = tCls.getMethod(getMethodName,new Class[]{});
+                    	Object value = getMethod.invoke(t, new Object[]{});
+                    	String textValue = null;
+                    	
+                    	
+                    	if (value instanceof Date) {
+                    		Date date = (Date) value;
+                    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    		textValue = sdf.format(date);
+                    	} else if(value instanceof Integer){
+                    		textValue = ((Integer)value).toString();
+                    		if ("getOrderState".equals(getMethodName)){
+                    			if ("4".equals(textValue)) {
+                    				textValue = "订单禁用/异常";
+                    			} else if ("0".equals(textValue)) {
+                    				textValue = "未分配货车";
+                    			}else if ("1".equals(textValue)) {
+                    				textValue = "已分配货车";
+                    			}else if ("2".equals(textValue)) {
+                    				textValue = "已发货";
+                    			}else if ("3".equals(textValue)) {
+                    				textValue = "已到达";
+                    			}
+                    		}
+                    		if ("getPayState".equals(getMethodName)){
+                    			if ("0".equals(textValue)) {
+                    				textValue = "未支付";
+                    			} else if ("1".equals(textValue)) {
+                    				textValue = "已支付";
+                    			}
+                    		}
+                    	} else if (value instanceof String) {
+                    		textValue = (String) value;
+                    	} else if (value instanceof Double){
+                    		textValue = ((Double)value).toString();
+                    	}
+                    	
+                    	HSSFRichTextString richString = new HSSFRichTextString(textValue);
+                    	HSSFFont font3 = workbook.createFont();
+                    	font3.setColor(HSSFColor.BLUE.index);//定义Excel数据颜色
+                    	richString.applyFont(font3);
+                    	cell.setCellValue(richString);
+                    }
+
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-disposition", "attachment;filename=OrderList.xls");//默认Excel名称
+        response.flushBuffer();
+        workbook.write(response.getOutputStream());
+        model.addAttribute("msg", "下载订单列表成功");
+    }
+	
+	@RequestMapping("/contract_download")
+	public void contract_download(HttpSession session,Model model,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Contract contract=(Contract) session.getAttribute("contract");
+		 
+        
+try {
+			File file=new File("D:/oxygen/Logistics01/src/main/webapp/staticfile/contract.doc");
+			//读取word模板文件
+			FileInputStream in = new FileInputStream(new File(file.toString()));
+			HWPFDocument hdt = new HWPFDocument(in);
+			Fields fields = hdt.getFields();
+			Iterator<org.apache.poi.hwpf.usermodel.Field> it = fields.getFields(FieldsDocumentPart.MAIN).iterator();
+			while(it.hasNext()){
+				System.out.println(it.next().getType());
+			}
+			
+			//替换读取到的word模板内容的指定字段
+			Range range = hdt.getRange();
+			Map<String, String> map = new HashMap<String, String>();  
+	        map.put("${startDate}", contract.getStartDate());  
+	        map.put("${endDate}", contract.getEndDate());  
+	        map.put("${security}", contract.getSecurity().toString());  
+	        map.put("${pname}", contract.getPname());  
+	        map.put("${sadd}", contract.getSadd());  
+	        map.put("${eadd}", contract.getEadd());  
+	        map.put("${price}", contract.getPrice());
+			for (Map.Entry<String,String> entry:map.entrySet()) {
+				range.replaceText(entry.getKey(),entry.getValue());
+			}
+			
+			//输出word内容文件流，提供下载
+			response.reset();
+            response.setContentType("application/x-msdownload");
+            response.addHeader("Content-Disposition", "attachment; filename=\"laokboke.doc\"");
+			ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+			ServletOutputStream servletOS = response.getOutputStream();
+			hdt.write(ostream);
+			servletOS.write(ostream.toByteArray());
+			servletOS.flush();
+			servletOS.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			
+		}
+    }
+	
+	
+}  
+

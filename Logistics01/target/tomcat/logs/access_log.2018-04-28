@@ -1,0 +1,16 @@
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:42:16 +0800] "GET / HTTP/1.1" 302 - http-bio-8090-exec-1 250
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:42:17 +0800] "GET /tologin.action;jsessionid=70853A77948B7A171DFCC568A2610A88 HTTP/1.1" 200 3308 http-bio-8090-exec-2 732
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:42:26 +0800] "POST /login.action HTTP/1.1" 302 - http-bio-8090-exec-3 2343
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:42:27 +0800] "GET /home HTTP/1.1" 200 5164 http-bio-8090-exec-4 516
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:42:27 +0800] "GET /introduction.action HTTP/1.1" 200 1290 http-bio-8090-exec-5 34
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:44:18 +0800] "GET /to_userlist.action HTTP/1.1" 200 3465 http-bio-8090-exec-7 156
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:44:51 +0800] "POST /to_user_role HTTP/1.1" 200 3500 http-bio-8090-exec-8 394
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:44:51 +0800] "GET /staticfile/skin/default/images/icon/currency_yen.png HTTP/1.1" 404 1055 http-bio-8090-exec-9 29
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:44:51 +0800] "GET /staticfile/skin/default/images/icon/currency_yen.png HTTP/1.1" 404 1055 http-bio-8090-exec-10 17
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:44:52 +0800] "GET /staticfile/components/zTree/css/zTreeStyle/img/zTreeStandard.png HTTP/1.1" 200 11173 http-bio-8090-exec-10 42
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:46:58 +0800] "POST /to_user_role HTTP/1.1" 200 3429 http-bio-8090-exec-4 801
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:46:58 +0800] "POST /to_user_role HTTP/1.1" 200 3429 http-bio-8090-exec-3 3021
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:47:14 +0800] "GET /to_rolelist.action HTTP/1.1" 200 3969 http-bio-8090-exec-4 82
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:47:49 +0800] "POST /to_role_module HTTP/1.1" 200 4016 http-bio-8090-exec-7 630
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:47:55 +0800] "POST /to_role_module HTTP/1.1" 200 4022 http-bio-8090-exec-7 74
+0:0:0:0:0:0:0:1 - - [28/Apr/2018:13:48:09 +0800] "GET /to_modulelist.action HTTP/1.1" 200 5165 http-bio-8090-exec-7 73

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.taihu.logistics.mapper.TruckMapper">
+	<select id="contributeTruck" resultType="Truck">
+		SELECT DISTINCT * FROM truck WHERE truck_add=#{truckAdd} and truck_state=0 limit 1
+	</select>
+	<update id="useTruck">
+		UPDATE truck SET truck_state=#{truckState} WHERE truck_id=#{truckId}
+	</update>
+	<update id="resetTruck">
+		UPDATE truck SET truck_state=#{truckState},truck_add=#{truckAdd} WHERE truck_id=#{truckId}
+	</update>
+	<update id="changeTruckState">
+		UPDATE truck SET truck_state=#{truckState} WHERE truck_id IN
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+</mapper>

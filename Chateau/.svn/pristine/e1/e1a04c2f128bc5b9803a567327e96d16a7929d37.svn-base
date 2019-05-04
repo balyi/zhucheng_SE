@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chateau.mapper.ChateauMapper">
+
+    <sql id="chateauSql">
+        SELECT * FROM chateau c
+        LEFT JOIN
+        (SELECT `user`.user_id master_id,user.name master_name from user) u
+        ON
+        c.user_id=u.master_id
+    </sql>
+    <resultMap id="chateauRM" type="Chateau" autoMapping="true">
+        <id column="chateau_id" property="chateauId"/>
+        <association property="user" javaType="User">
+            <id column="master_id" property="userId"/>
+            <result column="master_name" property="name"/>
+
+        </association>
+
+    </resultMap>
+	<select id="findAllChateau" resultMap="chateauRM">
+        <include refid="chateauSql"></include>
+    </select>
+
+    <select id="findOneChateau" resultMap="chateauRM">
+        <include refid="chateauSql"></include>
+        WHERE c.chateau_id=#{chateauId}
+    </select>
+
+    <resultMap id="chateauWineRM" type="Wine" autoMapping="true">
+        <id column="wine_id" property="wineId"/>
+        <association property="chateau" javaType="Chateau">
+            <id column="chateau_id1" property="chateauId"/>
+            <result column="mostly_type" property="mostlyType"/>
+            <result column="other_type" property="otherType"/>
+            <association property="user" javaType="User">
+                <id column="master_id" property="userId"/>
+                <result column="master_name" property="name"/>
+
+            </association>
+        </association>
+        
+    </resultMap>
+    <select id="findChateauWine" resultMap="chateauWineRM">
+        SELECT * FROM
+        wine w
+    LEFT JOIN
+        (SELECT * FROM chateau c
+            LEFT JOIN
+            (SELECT `user`.user_id master_id,user.name master_name from user) u
+            ON
+            c.user_id=u.master_id) chateau
+        ON
+        w.chateau_id=chateau.chateau_id
+        WHERE chateau.chateau_id=#{chateauId}
+    </select>
+
+    <delete id="delete">
+      DELETE FROM chateau WHERE chateau_id IN
+      <foreach collection="array" item="chateauId" open="(" separator="," close=")">
+          #{chateauId}
+      </foreach>
+
+    </delete>
+
+</mapper>

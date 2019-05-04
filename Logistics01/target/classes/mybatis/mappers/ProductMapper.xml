@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.taihu.logistics.mapper.ProductMapper">
+
+	<select id="findAll"  resultType="Product">
+  		SELECT * FROM product WHERE user_id=#{userId}
+  	</select>
+  	
+  	<select id="findAllProducts"  resultType="Product">
+  		SELECT * FROM product
+  	</select>
+	
+	<insert id="addProduct">
+	INSERT INTO product (product_id,product_no,product_name,product_state,number,length,width,height,weight,product_remark,user_id,create_time,alter_time) 
+	VALUES
+	(#{productId},#{productNo},#{productName},#{productState},#{number},#{length},#{width},#{height},#{weight},#{productRemark},#{userId},#{createTime},#{updateTime})
+	</insert
+	>
+	<delete id="delete">
+	DELETE FROM product WHERE product_id IN 
+	<!-- 因为传递过来的是一个参数 直接参数的类型（list,array） -->
+		<foreach collection="array" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<select id="findProductById"  resultType="Product">
+  		SELECT * FROM product WHERE product_id IN
+  		<foreach collection="array" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+  	</select>
+  	
+  	<update id="changeState">
+	UPDATE product SET product_state=#{productState} WHERE product_id in 
+	<!-- 因为传递过来的是map 所以collection中写key -->
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+		#{id}
+		</foreach>
+	</update>
+
+</mapper>
