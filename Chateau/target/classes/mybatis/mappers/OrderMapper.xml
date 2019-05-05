@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chateau.mapper.OrderMapper">
+
+
+    <resultMap id="orderRM" type="Order" autoMapping="true">
+        <id column="order_id" property="orderId"/>
+        <association property="user" javaType="User">
+            <id column="uid" property="userId"/>
+            <result column="username" property="username"/>
+        </association>
+        <association property="orderReserveWine" javaType="OrderReserveWine">
+            <id column="order_id" property="orderId"/>
+            <result column="wine_id" property="wineId"/>
+            <result column="buynum" property="num"/>
+        </association>
+    </resultMap>
+    <resultMap id="ordersRM" type="Order" autoMapping="true">
+        <id column="order_id" property="orderId"/>
+        <association property="user" javaType="User">
+            <id column="uid" property="userId"/>
+            <result column="username" property="username"/>
+        </association>
+    </resultMap>
+
+
+
+    <resultMap id="orderRM2" type="Order" autoMapping="true">
+        <id column="order_id" property="orderId"/>
+        <association property="user" javaType="User">
+            <id column="uid" property="userId"/>
+            <result column="username" property="username"/>
+        </association>
+        <association property="orderReserveWine" javaType="OrderReserveWine">
+            <id column="order_id" property="orderId"/>
+            <result column="wine_id" property="wineId"/>
+            <result column="year" property="year"/>
+            <result column="buynum" property="num"/>
+        </association>
+    </resultMap>
+
+    <!--订单查找现买酒-->
+    <select id="findAll" resultMap="orderRM">
+       select ui.*,u.name from
+        (select od.*,uoi.user_id from
+        (select w.*,o.remark,o.state,o.address,o.create_time FROM
+        (select w.wine_id,w.wine_name,w.price,woi.order_id,woi.buynum from wine w
+        RIGHT JOIN wine_order_info woi
+        on w.wine_id=woi.wine_id) w
+        LEFT JOIN orders o
+        on w.order_id=o.order_id) od
+        LEFT JOIN
+        user_order_info uoi
+        on od.order_id=uoi.order_id) ui
+        LEFT JOIN
+        user u
+        on ui.user_id=u.user_id
+
+    </select>
+
+    <!--删除订单-->
+    <delete id="delete">
+        delete from orders where order_id in
+        <foreach collection="array" item="orderId" open="(" close=")" separator=",">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <!--删除订单和用户表-->
+    <delete id="deleteOrderUser">
+        delete from user_order_info where order_id in
+        <foreach collection="array" item="orderId" open="(" close=")" separator=",">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <!--删除订单和酒表-->
+    <delete id="deleteOrderWine">
+        delete from wine_order_info where order_id in
+        <foreach collection="array" item="orderId" open="(" close=")" separator=",">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <!--查找预购订单-->
+    <select id="findAllReserve" resultMap="orderRM2">
+         select ui.*,u.name from
+        (select od.*,uoi.user_id from
+        (select wi.*,o.remark,o.state,o.create_time,o.address from
+        (select orw.order_id,orw.wine_id,orw.`year`,orw.num,w.wine_name,w.price from
+        order_reserve_wine orw
+        LEFT JOIN wine w
+        on orw.wine_id=w.wine_id) wi
+        LEFT JOIN orders o
+        on wi.order_id=o.order_id) od
+        LEFT JOIN user_order_info uoi
+        on od.order_id=uoi.order_id) ui
+        LEFT JOIN
+        user u
+        on ui.user_id=u.user_id
+    </select>
+
+    <!--删除预购订单和酒-->
+    <delete id="deleteReserveWine">
+        delete from order_reserve_wine where order_id in
+        <foreach collection="array" item="orderId" open="(" close=")" separator=",">
+            #{orderId}
+        </foreach>
+    </delete>
+
+
+    <insert id="addOrder">
+        insert into orders(order_id,remark,state,user_ID,create_time,address,money)
+        VALUES (#{orderId},#{remark},#{state},#{user.userId},#{createTime},#{address},#{money})
+
+    </insert>
+    <insert id="addOrderandUser">
+        insert into user_order_info(order_id,user_id) values(#{orderId},#{userId})
+    </insert>
+
+    <select id="findAllOrders" resultMap="ordersRM">
+        SELECT * FROM orders o
+        LEFT JOIN (SELECT user_id uid,username from user)u
+        ON o.user_ID = u.uid
+    </select>
+
+</mapper>

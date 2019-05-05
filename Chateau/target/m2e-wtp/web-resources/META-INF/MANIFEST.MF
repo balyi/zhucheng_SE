@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: Chateau Maven Webapp
 Implementation-Version: 1.0-SNAPSHOT
-Built-By: Administrator
+Built-By: JVCHENG
 Implementation-Vendor-Id: com.chateau
 Build-Jdk: 1.8.0_152
 Implementation-URL: http://maven.apache.org

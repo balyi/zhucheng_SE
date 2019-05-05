@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chateau.mapper.WineMapper">
+    <update id="changePnum">
+        update wine set pnum=#{pnum} where wine_id=#{wineId}
+    </update>
+
+    <select id="findAll" resultMap="wineRM">
+        SELECT * FROM
+        wine w
+        LEFT JOIN
+        (SELECT chateau_id c_id,chateau_name c_name FROM chateau) c
+        ON w.chateau_id=c.c_id
+    </select>
+    <resultMap id="wineRM" type="Wine" autoMapping="true">
+        <id column="wine_id" property="wineId"/>
+        <association property="chateau" javaType="Chateau">
+            <id column="c_id" property="chateauId"/>
+            <result column="c_name" property="chateauName"/>
+        </association>
+    </resultMap>
+
+    <insert id="saveWine">
+        INSERT  INTO wine(wine_id,chateau_id,wine_name,year,pnum,price,area,alcohol,type,time,remark) VALUES(#{wineId},#{chateau.chateauId},#{wineName},#{year},#{pnum},#{price},#{area},#{alcohol},#{type},#{time},#{remark})
+    </insert>
+
+    <delete id="deleteWineById">
+        DELETE  from wine where wine_id in
+        <foreach collection="array" item="wineId" open="(" close=")" separator=",">
+            #{wineId}
+        </foreach>
+    </delete>
+
+    <select id="findOne" resultMap="wineRM">
+         SELECT * FROM
+        wine w
+        LEFT JOIN
+        (SELECT chateau_id c_id,chateau_name c_name FROM chateau) c
+        ON w.chateau_id=c.c_id
+        where wine_id=#{wineId}
+    </select>
+
+</mapper>
