@@ -1,4 +1,4 @@
-package explore.mkdir;
+package file.explore.mkdir;
 
 import java.io.File;
 /**

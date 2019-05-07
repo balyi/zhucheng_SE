@@ -1,4 +1,4 @@
-package application;
+package file.application;
 
 import java.io.File;
 import java.util.Set;
@@ -22,7 +22,7 @@ public class DeleteDuplication {
 					count++;
 				}
 			}
-			System.out.println("一共删除"+count+"个重复文件");
+			System.out.println("�?共删�?"+count+"个重复文�?");
 		}
 	}
 }

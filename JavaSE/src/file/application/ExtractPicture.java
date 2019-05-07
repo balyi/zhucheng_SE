@@ -1,4 +1,4 @@
-package application;
+package file.application;
 
 import java.io.File;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class ExtractPicture {
 				System.out.println(fullName);
 				String[] split = fullName.split("\\.");
 				String fileName=split[0];
-				//判断是否为组图
+				//判断是否为组�?
 				boolean ifGroup=fileName.matches("^.*p.*$");
 				if(ifGroup) {
 					String[] split2 = split[0].split("_p");

@@ -1,4 +1,4 @@
-package explore.delete;
+package file.explore.delete;
 
 import java.io.File;
 
